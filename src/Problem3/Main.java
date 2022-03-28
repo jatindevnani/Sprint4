@@ -15,15 +15,31 @@ public class Main {
 
         //Passing the employeeMap Object to the getSortedMapWithValue Method for sorting
         Main instanceOfMain = new Main();
-        instanceOfMain.getSortedMapWithValue(employeeMap);
+        Map<String, Employee> sortedMap = instanceOfMain.getSortedMapWithValue(employeeMap);
+
+        Set<Map.Entry<String, Employee>> entries = sortedMap.entrySet();
+
+        for(Map.Entry entry: entries) {
+            System.out.println("Department Name: " + entry.getKey());
+            System.out.println(entry.getValue());
+            System.out.println("___________________________________");
+        }
 
     }
 
-//    public Map<String,Employee> getSortedMapWithValue(Map<String,Employee> originalMap) {
-//        //sort the supplied map according to the value(Employee salary) and return the sorted Map.
-//
-//
-//    }
+    public Map<String,Employee> getSortedMapWithValue(Map<String,Employee> originalMap) {
+        //sort the supplied map according to the value(Employee salary) and return the sorted Map.
+        List<Map.Entry<String, Employee>> entries = new ArrayList<>(originalMap.entrySet());
+        Collections.sort(entries, (e1, e2) -> e1.getValue().getSalary() > e2.getValue().getSalary() ? 1:-1);
+
+        Map<String, Employee> sortedMap = new LinkedHashMap();
+
+        for(Map.Entry entry: entries) {
+            sortedMap.put((String)entry.getKey(), (Employee) entry.getValue());
+        }
+
+        return sortedMap;
+    }
 }
 
 class Employee {
@@ -72,6 +88,11 @@ class Employee {
 
     public void setSalary(double salary) {
         this.salary = salary;
+    }
+
+    @Override
+    public String toString() {
+        return "\nID: " + empId + "\nName: " + empName + "\nSalary: " + salary;
     }
 }
 
